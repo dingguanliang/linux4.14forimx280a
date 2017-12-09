@@ -18,4 +18,12 @@ config SND_SOC_MXS_SGTL5000
 	  Say Y if you want to add support for SoC audio on an MXS board with
 	  a sgtl5000 codec.
 
+config SND_SOC_MXS_UDA1380
+	tristate "SoC Audio support for MXS boards with uda1380"
+	depends on I2C
+	select SND_SOC_UDA1380
+	help
+	  Say Y if you want to add support for SoC audio on an MXS board with
+	  a uda1380 codec.
+
 endif	# SND_MXS_SOC

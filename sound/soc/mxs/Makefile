@@ -7,5 +7,7 @@ obj-$(CONFIG_SND_MXS_SOC) += snd-soc-mxs.o snd-soc-mxs-pcm.o
 
 # i.MX Machine Support
 snd-soc-mxs-sgtl5000-objs := mxs-sgtl5000.o
+snd-soc-mxs-uda1380-objs := mxs-uda1380.o
 
 obj-$(CONFIG_SND_SOC_MXS_SGTL5000) += snd-soc-mxs-sgtl5000.o
+obj-$(CONFIG_SND_SOC_MXS_UDA1380) += snd-soc-mxs-uda1380.o

@@ -940,7 +940,7 @@ config SND_SOC_UDA134X
        tristate
 
 config SND_SOC_UDA1380
-        tristate
+    tristate "NXP UDA1380 codec driver support"
 	depends on I2C
 
 config SND_SOC_WL1273
