@@ -62,6 +62,8 @@ static int mxs_saif_set_dai_sysclk(struct snd_soc_dai *cpu_dai,
 {
 	struct mxs_saif *saif = snd_soc_dai_get_drvdata(cpu_dai);
 
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
+
 	switch (clk_id) {
 	case MXS_SAIF_MCLK:
 		saif->mclk = freq;
@@ -305,6 +307,8 @@ static int mxs_saif_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 	u32 scr0;
 	struct mxs_saif *saif = snd_soc_dai_get_drvdata(cpu_dai);
 
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
+
 	stat = __raw_readl(saif->base + SAIF_STAT);
 	if (stat & BM_SAIF_STAT_BUSY) {
 		dev_err(cpu_dai->dev, "error: busy\n");
@@ -392,6 +396,8 @@ static int mxs_saif_startup(struct snd_pcm_substream *substream,
 	struct mxs_saif *saif = snd_soc_dai_get_drvdata(cpu_dai);
 	int ret;
 
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
+
 	/* clear error status to 0 for each re-open */
 	saif->fifo_underrun = 0;
 	saif->fifo_overrun = 0;
@@ -416,6 +422,8 @@ static void mxs_saif_shutdown(struct snd_pcm_substream *substream,
 {
 	struct mxs_saif *saif = snd_soc_dai_get_drvdata(cpu_dai);
 
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
+
 	clk_unprepare(saif->clk);
 }
 
@@ -431,6 +439,8 @@ static int mxs_saif_hw_params(struct snd_pcm_substream *substream,
 	struct mxs_saif *master_saif;
 	u32 scr, stat;
 	int ret;
+
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
 
 	master_saif = mxs_saif_get_master(saif);
 	if (!master_saif)
@@ -516,6 +526,8 @@ static int mxs_saif_prepare(struct snd_pcm_substream *substream,
 {
 	struct mxs_saif *saif = snd_soc_dai_get_drvdata(cpu_dai);
 
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
+
 	/* enable FIFO error irqs */
 	__raw_writel(BM_SAIF_CTRL_FIFO_ERROR_IRQ_EN,
 		saif->base + SAIF_CTRL + MXS_SET_ADDR);
@@ -530,6 +542,8 @@ static int mxs_saif_trigger(struct snd_pcm_substream *substream, int cmd,
 	struct mxs_saif *master_saif;
 	u32 delay;
 	int ret;
+
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
 
 	master_saif = mxs_saif_get_master(saif);
 	if (!master_saif)
@@ -658,6 +672,8 @@ static int mxs_saif_dai_probe(struct snd_soc_dai *dai)
 {
 	struct mxs_saif *saif = dev_get_drvdata(dai->dev);
 
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
+
 	snd_soc_dai_set_drvdata(dai, saif);
 
 	return 0;
@@ -689,6 +705,8 @@ static irqreturn_t mxs_saif_irq(int irq, void *dev_id)
 {
 	struct mxs_saif *saif = dev_id;
 	unsigned int stat;
+
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
 
 	stat = __raw_readl(saif->base + SAIF_STAT);
 	if (!(stat & (BM_SAIF_STAT_FIFO_UNDERFLOW_IRQ |
@@ -748,6 +766,8 @@ static int mxs_saif_probe(struct platform_device *pdev)
 	struct mxs_saif *saif;
 	int irq, ret = 0;
 	struct device_node *master;
+
+    printk("%s %s %d \n",__FILE__, __FUNCTION__, __LINE__);
 
 	if (!np)
 		return -EINVAL;

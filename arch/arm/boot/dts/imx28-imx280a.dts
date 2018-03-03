@@ -48,6 +48,7 @@
 					reg = <0>;
 					fsl,pinmux-ids = <
                         MX28_PAD_SSP0_DATA6__GPIO_2_6   /* buzzer */
+                        MX28_PAD_LCD_RS__GPIO_1_26      /* eth phy rst */
 					>;
 					fsl,drive-strength = <MXS_DRIVE_4mA>;
 					fsl,voltage = <MXS_VOLTAGE_HIGH>;
@@ -84,6 +85,13 @@
 				status = "okay";
 			};
 
+            saif1: saif@80046000 {
+				pinctrl-names = "default";
+				pinctrl-0 = <&saif1_pins_a>;
+                fsl,saif-master = <&saif0>;
+				status = "okay";
+			};
+
 			lradc@80050000 {
 				status = "okay";
 				fsl,lradc-touchscreen-wires = <4>;
@@ -106,7 +114,7 @@
                 uda1380: uda1380@18 {
                     compatible = "nxp,uda1380";
                     reg = <0x18>;
-                    dac-clk = "wspll";
+                    dac-clk = <0>;  // 0 is sysclk.
                 };
 			};
 
@@ -142,17 +150,10 @@
 		mac0: ethernet@800f0000 {
 			phy-mode = "rmii";
 			pinctrl-names = "default";
-			pinctrl-0 = <&mac0_pins_a>;
+			pinctrl-0 = <&mac0_pins_b>;
 			phy-supply = <&reg_fec_3v3>;
-			phy-reset-gpios = <&gpio4 13 GPIO_ACTIVE_LOW>;
+			phy-reset-gpios = <&gpio1 26 GPIO_ACTIVE_LOW>;
 			phy-reset-duration = <100>;
-			status = "okay";
-		};
-
-		mac1: ethernet@800f4000 {
-			phy-mode = "rmii";
-			pinctrl-names = "default";
-			pinctrl-0 = <&mac1_pins_a>;
 			status = "okay";
 		};
 	};
@@ -161,15 +162,6 @@
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <0>;
-
-		reg_3p3v: regulator@0 {
-			compatible = "regulator-fixed";
-			reg = <0>;
-			regulator-name = "3P3V";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			regulator-always-on;
-		};
 
 		reg_vddio_sd0: regulator@1 {
 			compatible = "regulator-fixed";
@@ -186,7 +178,7 @@
 			regulator-name = "fec-3v3";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio2 15 0>;
+			regulator-always-on;
 		};
 
 		reg_usb0_vbus: regulator@3 {
@@ -211,9 +203,9 @@
 	};
 
 	sound {
-		compatible = "fsl,imx28-imx280a-uda1380";
-		model = "imx28-imx280a-uda1380";
-		saif-controllers = <&saif0>;
+		compatible = "fsl,mxs-imx280a-uda1380";
+		model = "mxs-imx280a-uda1380";
+		saif-controllers = <&saif0 &saif1>;
 		audio-codec = <&uda1380>;
 	};
 
